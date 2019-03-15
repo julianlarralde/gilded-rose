@@ -19,8 +19,7 @@ class GildedRose(object):
 
 @property
 def x(self):
-    print("getter of x called")
-    return self._x
+    return self._sell_in
 
 class Item:
 
@@ -32,15 +31,11 @@ class Item:
         self.QUALITY_MULTIPLIER_SIGN = -1
         self.QUALITY_MULTIPLIER_VALUE = 1
 
-
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
 
     def process_sell_in(self):
-        self.sell_in -= 1
-        
-        if self.sell_in < 0:
-                self.process_quality()
+        self.sell_in -= 1    
     
     def process_quality(self):
         if self.sell_in < 0:
@@ -58,6 +53,9 @@ class Brie(Item):
         self.QUALITY_MULTIPLIER_VALUE = 1
     
     def process_quality(self):
+        if(self.sell_in < 0):
+            self.QUALITY_MULTIPLIER_VALUE = 2
+
         self.quality += self.QUALITY_MULTIPLIER_SIGN * self.QUALITY_MULTIPLIER_VALUE
 
 class Sulfuras(Item):
@@ -70,7 +68,6 @@ class Conjured(Item,object):
     def process_quality(self):
         self.QUALITY_MULTIPLIER_VALUE = 2
         super(Conjured, self).process_quality()
-
 
 class Concert(Item):
     def __init__(self, name, sell_in, quality):
